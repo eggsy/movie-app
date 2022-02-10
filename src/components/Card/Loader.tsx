@@ -5,7 +5,7 @@ export const Loader: React.FC<{ count?: number }> = ({ count = 1 }) => {
     <>
       {Array(count)
         .fill(null)
-        .map((idx) => (
+        .map((_, idx) => (
           <Card key={idx} />
         ))}
     </>
