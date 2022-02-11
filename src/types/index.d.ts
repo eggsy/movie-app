@@ -37,6 +37,7 @@ export interface Person {
   profile_path?: string;
   popularity: number;
   media_type: string;
+  character: string;
 }
 
 export interface Knownfor {

@@ -32,6 +32,7 @@ interface SeriesInfo {
   vote_average: number;
   vote_count: number;
   trailer: Video;
+  cast: Person[];
 }
 
 interface Spokenlanguage {
