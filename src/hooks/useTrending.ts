@@ -3,7 +3,7 @@ import { useState } from "react";
 import useSWR from "swr";
 
 // Types
-import type { Person, Result } from "../types";
+import type { Person, Result } from "../types/tmdb-api";
 
 // Fetcher
 const fetcher = <T>(url: string) => axios.get<T>(url).then((res) => res.data);

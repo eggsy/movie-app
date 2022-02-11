@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 // Types
-import { Result } from "../../types";
+import { Result } from "../../types/tmdb-api";
 
 export const MovieCard: React.FC<{
   movie: Result;

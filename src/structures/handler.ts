@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Types
-import { TmdbApiResponse } from "../types";
+import { TmdbApiResponse } from "../types/tmdb-api";
 
 interface ExtendedMovieInfo extends MovieInfo {
   media_type?: "movie" | "tv";

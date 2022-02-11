@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 // Types
-import type { Person } from "../../types";
+import type { Person } from "../../types/tmdb-api";
 
 export const PersonCard: React.FC<{ person: Person; personAs?: string }> = ({
   person,
