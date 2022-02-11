@@ -13,6 +13,7 @@ import type { AppProps } from "next/app";
 
 // Components
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 // Meta
 const meta = {
@@ -48,22 +49,22 @@ function MovieApp({ Component, pageProps }: AppProps) {
         <meta name="twitter:description" content={meta.description} />
       </Head>
 
-      <div className="min-h-screen bg-white/90 backdrop-blur-md backdrop-filter">
+      <div className="min-h-screen bg-white/90 backdrop-blur-md">
         <Navbar />
 
-        <div className="container py-10 mx-auto">
+        <div className="container min-h-screen py-10 mx-auto">
           <Component {...pageProps} />
         </div>
+
+        <Footer />
       </div>
     </>
   );
 }
 
-// TODO Footer
 // TODO Actor pages
-// TODO Better landing hero
 // TODO Search, categories and stuff
-// TODO Responsiveness
 // TODO Studio pages
+// TODO fix missing animation on title names of cards
 
 export default MovieApp;
