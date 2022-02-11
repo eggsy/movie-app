@@ -19,14 +19,14 @@ const Home: NextPage = () => {
   const { data, loading, error } = useHomeData();
 
   return (
-    <div className="px-6 space-y-10 md:px-0 ">
+    <div className="relative px-6 space-y-10 md:px-0">
       <section className="grid items-center gap-10 py-8 md:grid-cols-2 ">
         <div className="space-y-8 text-center md:text-left">
-          <span className="px-4 py-2 text-white rounded-full bg-brand-dark-blue">
-            Together
+          <span className="px-4 py-2 text-white rounded-full bg-cyan-800">
+            Watch Anywhere
           </span>
 
-          <h1 className="text-5xl font-black leading-tight text-brand-dark-blue">
+          <h1 className="text-5xl font-black leading-tight text-cyan-800">
             The Best{" "}
             <span className="underline text-brand-blue">Movie App</span> of the
             World
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
           </p>
 
           <div className="flex flex-col items-center justify-center gap-5 md:justify-start md:flex-row">
-            <button className="px-10 py-2 text-white transition-colors rounded-lg bg-brand-dark-blue hover:bg-brand-dark-blue/80">
+            <button className="px-10 py-2 text-white transition-colors rounded-lg bg-cyan-800 hover:bg-cyan-800/90">
               Join Now
             </button>
 
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
 
         <div className="hidden md:block md:ml-auto">
           <Image
-            src="/header.svg"
+            src="/heading.svg"
             width={500}
             height={500}
             alt="header image"
