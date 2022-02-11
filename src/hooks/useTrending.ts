@@ -2,17 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import useSWR from "swr";
 
-const host =
-  process.env.NODE_ENV === "production" && process.env.HOST
-    ? process.env.HOST
-    : "http://localhost:3000";
-
 // Types
 import type { Person, Result } from "../types";
 
 // Fetcher
-const fetcher = <T>(url: string) =>
-  axios.get<T>(host + url).then((res) => res.data);
+const fetcher = <T>(url: string) => axios.get<T>(url).then((res) => res.data);
 
 // Return Type
 interface ITrendingResponse {
