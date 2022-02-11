@@ -31,6 +31,7 @@ interface SeriesInfo {
   type: string;
   vote_average: number;
   vote_count: number;
+  trailer: Video;
 }
 
 interface Spokenlanguage {
@@ -47,6 +48,16 @@ interface Season {
   overview: string;
   poster_path: string;
   season_number: number;
+}
+
+interface Video {
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
 }
 
 interface Productioncountry {

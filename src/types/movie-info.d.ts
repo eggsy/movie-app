@@ -24,6 +24,18 @@ interface MovieInfo {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  trailer: Video;
+  cast: Person[];
+}
+
+interface Video {
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
 }
 
 interface Spokenlanguage {
