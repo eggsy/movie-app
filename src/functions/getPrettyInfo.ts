@@ -21,6 +21,7 @@ export const getPrettyInfo = <T>(data: MovieInfo | SeriesInfo) => {
   const calculator = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
+    maximumSignificantDigits: 3,
   });
 
   return {
