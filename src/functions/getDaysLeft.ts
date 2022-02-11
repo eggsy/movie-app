@@ -1,4 +1,4 @@
-export const getDaysDaysLeft = (date: string) => {
+export const getDaysLeft = (date: string) => {
   const today = new Date();
   const nextEpisodeDate = new Date(date);
 
@@ -7,4 +7,4 @@ export const getDaysDaysLeft = (date: string) => {
   );
 };
 
-export default getDaysDaysLeft;
+export default getDaysLeft;
