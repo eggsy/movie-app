@@ -12,7 +12,8 @@ import getPrettyInfo from "../../functions/getPrettyInfo";
 
 // Components
 import PageLoader from "../../components/Page/Loader";
-import { Rating, Genre, Company } from "../series/[id]";
+import PersonCard from "../../components/Card/Person";
+import { Trailer, Genre, Company } from "../series/[id]";
 
 const MoviePage: NextPage = () => {
   const { query } = useRouter();
@@ -43,14 +44,19 @@ const MoviePage: NextPage = () => {
           <div className="flex flex-col items-center gap-10">
             <div className="p-1 rounded-md bg-white/10 backdrop-blur-xl">
               <div
-                className="flex-shrink-0 w-48 bg-center bg-no-repeat bg-cover rounded-md h-72"
+                className="relative flex-shrink-0 w-48 bg-center bg-no-repeat bg-cover rounded-md h-72"
                 style={{
                   backgroundImage: `url('${posterUrl}')`,
                 }}
               >
-                <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
-                  <Rating goodRating={goodRating} />
-                </div>
+                {data.trailer && (
+                  <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
+                    <Trailer
+                      poster={backgroundUrl}
+                      videoId={data.trailer.key}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -93,7 +99,7 @@ const MoviePage: NextPage = () => {
                       rel="noreferrer"
                       className="px-2 py-1 text-sm font-medium text-white transition-colors rounded-md select-none bg-brand-dark-blue backdrop-blur-sm hover:bg-brand-dark-blue/90"
                     >
-                      🔗 Website
+                      🔗 Homepage
                     </a>
                   )}
                 </div>
@@ -110,13 +116,17 @@ const MoviePage: NextPage = () => {
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-              <h1 className="text-4xl font-bold text-gray-800">Release Date</h1>
+            {data.release_date && (
+              <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
+                <h1 className="text-4xl font-bold text-gray-800">
+                  Release Date
+                </h1>
 
-              <div className="text-gray-600">
-                {getFormattedDate(data.release_date)}
+                <div className="text-gray-600">
+                  {getFormattedDate(data.release_date)}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
               <h1 className="text-4xl font-bold text-gray-800">
@@ -138,6 +148,20 @@ const MoviePage: NextPage = () => {
                 </span>
                 .
               </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
+            <h1 className="text-4xl font-bold text-gray-800">Cast</h1>
+
+            <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
+              {data.cast.map((cast, index) => (
+                <PersonCard
+                  key={index}
+                  person={cast}
+                  personAs={cast.character}
+                />
+              ))}
             </div>
           </div>
 

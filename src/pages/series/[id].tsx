@@ -14,6 +14,10 @@ import getPrettyInfo from "../../functions/getPrettyInfo";
 
 // Components
 import PageLoader from "../../components/Page/Loader";
+import PersonCard from "../../components/Card/Person";
+
+// Icons
+import { Play } from "../../components/Icons";
 
 const SeriesPage: NextPage = () => {
   const { query } = useRouter();
@@ -51,9 +55,14 @@ const SeriesPage: NextPage = () => {
                   backgroundImage: `url('${posterUrl}')`,
                 }}
               >
-                <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
-                  <Rating goodRating={goodRating} />
-                </div>
+                {data.trailer && (
+                  <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
+                    <Trailer
+                      poster={backgroundUrl}
+                      videoId={data.trailer.key}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -104,7 +113,7 @@ const SeriesPage: NextPage = () => {
                       rel="noreferrer"
                       className="px-2 py-1 text-sm font-medium text-white transition-colors rounded-md select-none bg-brand-dark-blue backdrop-blur-sm hover:bg-brand-dark-blue/90"
                     >
-                      🔗 Website
+                      🔗 Homepage
                     </a>
                   )}
                 </div>
@@ -139,6 +148,16 @@ const SeriesPage: NextPage = () => {
                   <Season key={seasonId} name={name} poster={poster_path} />
                 ))}
               </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
+            <h1 className="text-4xl font-bold text-gray-800">Cast</h1>
+
+            <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
+              {data.cast.map((cast, index) => (
+                <PersonCard key={index} person={cast} personAs={cast.as} />
+              ))}
             </div>
           </div>
 
@@ -198,14 +217,24 @@ const Season: React.FC<{ poster: string; name: string }> = ({
   ALSO USED BY OTHER PAGES
 */
 
-export const Rating: React.FC<{ goodRating: boolean }> = ({ goodRating }) => (
-  <div
-    className={`overflow-hidden select-none flex items-center justify-center w-12 h-12   text-white text-2xl rounded-full ring-4 ring-white ${
-      goodRating ? "bg-green-600" : "bg-red-600"
-    }`}
+export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
+  videoId,
+  poster,
+}) => (
+  <a
+    href={`https://youtube.com/watch?v=${videoId}`}
+    target="_blank"
+    rel="noreferrer"
+    className="bg-center bg-cover rounded-full w-14 h-14"
+    title="Play Trailer"
+    style={{
+      backgroundImage: `url('${poster}')`,
+    }}
   >
-    {goodRating ? "👍" : "👎"}
-  </div>
+    <div className="flex items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[2px]">
+      <Play className="w-6 h-6" />
+    </div>
+  </a>
 );
 
 export const Genre: React.FC<{ genre: string }> = ({ genre }) => (
