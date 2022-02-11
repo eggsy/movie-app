@@ -71,7 +71,7 @@ const SeriesPage: NextPage = () => {
               </h1>
 
               <div className="space-y-2">
-                <div className="flex flex-wrap space-x-2">
+                <div className="flex flex-wrap justify-center gap-2">
                   {genres.map((genre) => (
                     <div
                       key={genre}
@@ -99,8 +99,8 @@ const SeriesPage: NextPage = () => {
                   </span>
                 </div>
 
-                <div>
-                  {data.homepage && (
+                {data.homepage && (
+                  <div>
                     <a
                       href={data.homepage}
                       target="_blank"
@@ -109,8 +109,8 @@ const SeriesPage: NextPage = () => {
                     >
                       🔗 Website
                     </a>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

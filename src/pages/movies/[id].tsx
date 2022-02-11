@@ -61,7 +61,7 @@ const MoviePage: NextPage = () => {
               </h1>
 
               <div className="space-y-2">
-                <div className="flex flex-wrap space-x-2">
+                <div className="flex flex-wrap justify-center gap-2">
                   {genres.map((genre) => (
                     <div
                       key={genre}
@@ -88,6 +88,19 @@ const MoviePage: NextPage = () => {
                     {goodRating ? "👍" : "👎"} {data.vote_average}
                   </span>
                 </div>
+
+                {data.homepage && (
+                  <div>
+                    <a
+                      href={data.homepage}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40 backdrop-blur-sm hover:bg-gray-300/60"
+                    >
+                      🔗 Website
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
