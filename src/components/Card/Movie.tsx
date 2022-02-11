@@ -1,10 +1,7 @@
 import Link from "next/link";
 
 // Types
-import type { Result } from "../../types";
-
-// Icons
-import { Thumb } from "../Icons";
+import { Result } from "../../types";
 
 export const MovieCard: React.FC<{
   movie: Result;
@@ -16,7 +13,7 @@ export const MovieCard: React.FC<{
   return (
     <Link href={`/${path}/${movie.id}`}>
       <a
-        className="w-full overflow-hidden transition-all transform bg-center bg-no-repeat bg-cover rounded-md md:hover:scale-110 group h-80"
+        className="w-full overflow-hidden transition-all transform bg-center bg-no-repeat bg-cover rounded-md md:hover:scale-[102.5%] group h-80"
         style={{
           backgroundImage: `url('${imageUrl}')`,
         }}
