@@ -8,8 +8,8 @@ const links = [
     label: "Home",
   },
   {
-    href: "/trending",
-    label: "Trending",
+    href: "/about",
+    label: "About Us",
   },
 ];
 
@@ -18,30 +18,32 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav className="space-x-6 bg-white shadow-sm">
-      <div className="container flex items-center justify-between mx-auto space-x-6">
-        <div className="flex items-center space-x-8">
-          <div className="flex items-center p-5 space-x-2 text-white bg-brand-dark-blue">
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-7 h-7"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <rect width="256" height="256" fill="none"></rect>
-                <path d="M232.3,114.3,88.3,26.4a15.5,15.5,0,0,0-16.1-.3A15.8,15.8,0,0,0,64,40V216a15.8,15.8,0,0,0,8.2,13.9,15.5,15.5,0,0,0,16.1-.3l144-87.9a16,16,0,0,0,0-27.4Z"></path>
-              </svg>
-            </div>
+      <div className="container flex items-center justify-center mx-auto space-x-6 md:justify-between">
+        <div className="flex items-center md:space-x-14">
+          <Link href="/">
+            <a className="flex items-center py-5 space-x-2 md:py-0 text-brand-dark-blue">
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <path d="M232.3,114.3,88.3,26.4a15.5,15.5,0,0,0-16.1-.3A15.8,15.8,0,0,0,64,40V216a15.8,15.8,0,0,0,8.2,13.9,15.5,15.5,0,0,0,16.1-.3l144-87.9a16,16,0,0,0,0-27.4Z"></path>
+                </svg>
+              </div>
 
-            <span className="text-xl font-semibold">Movie App</span>
-          </div>
+              <span className="text-lg font-semibold">Movie App</span>
+            </a>
+          </Link>
 
-          <ul className="flex items-center">
+          <ul className="items-center hidden md:flex">
             {links.map((link) => (
               <Link href={link.href} key={link.label}>
                 <a>
                   <li
-                    className={`h-full p-5 text-lg font-medium text-brand-dark-blue transition-colors hover:bg-gray-200 ${
+                    className={`h-full p-6 font-medium text-brand-dark-blue transition-colors hover:bg-gray-200 ${
                       route === link.href && "bg-gray-200"
                     }`}
                   >
@@ -53,9 +55,16 @@ export const Navbar: React.FC = () => {
           </ul>
         </div>
 
-        <ul className="flex items-center space-x-2">
+        <ul className="items-center hidden space-x-2 md:flex">
           <li className="flex items-center space-x-4 ">
-            <span className="text-lg">Eggsy</span>
+            <a
+              href="https://eggsy.xyz"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-gray-700 hover:underline"
+            >
+              Eggsy
+            </a>
 
             <div className="flex items-center space-x-2">
               <Image

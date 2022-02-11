@@ -21,11 +21,8 @@ export const MovieCard: React.FC<{
           backgroundImage: `url('${imageUrl}')`,
         }}
       >
-        <div className="absolute flex items-center px-2 py-1 space-x-2 text-xs text-white rounded-md top-3 left-3 bg-brand-dark-blue/75">
-          <div className="flex items-center space-x-1">
-            <Thumb className="w-4 h-4 text-white" />
-            <span>{movie.vote_average}</span>
-          </div>
+        <div className="absolute flex items-center px-2 py-1 space-x-2 text-xs text-white rounded-md bg-white/10 top-3 left-3 backdrop-blur-sm">
+          <span>👍 {movie.vote_average}</span>
         </div>
 
         <div className="absolute inset-x-0 bottom-0 hidden py-4 overflow-hidden transition-all select-none group-hover:block bg-gradient-to-t from-black/75 via-black/50 to-transparent ">

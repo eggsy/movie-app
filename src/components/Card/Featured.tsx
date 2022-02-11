@@ -1,8 +1,5 @@
 import Link from "next/link";
 
-// Icons
-import { Thumb } from "../Icons";
-
 export const FeaturedCard: React.FC<{ movie: DiscoveryResult }> = ({
   movie,
 }) => {
@@ -20,7 +17,7 @@ export const FeaturedCard: React.FC<{ movie: DiscoveryResult }> = ({
       >
         <div className="absolute inset-0 bg-black/10 backdrop-filter backdrop-blur-sm" />
 
-        <div className="absolute inset-x-0 bottom-0 px-6 py-4 text-white bg-gradient-to-t from-brand-dark-blue to-transparent">
+        <div className="absolute inset-x-0 bottom-0 px-6 py-4 text-white bg-gradient-to-t from-black to-transparent">
           <div className="flex items-end space-x-4">
             <div
               className="flex-shrink-0 w-24 bg-center bg-no-repeat bg-cover rounded-md h-36"
@@ -40,10 +37,9 @@ export const FeaturedCard: React.FC<{ movie: DiscoveryResult }> = ({
                 </p>
               </div>
 
-              <div className="flex items-center px-2 py-1 space-x-1 text-xs rounded-lg bg-brand-blue/30">
-                <Thumb className="w-4 h-4 text-white" />
-                <span>{voteAverage}/10</span>
-              </div>
+              <span className="px-2 py-1 space-x-1 text-sm rounded-lg bg-white/10 backdrop-blur-sm">
+                👍 {voteAverage}/10
+              </span>
             </div>
           </div>
         </div>
