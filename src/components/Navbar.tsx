@@ -1,6 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+
+// Hooks
 import { useRouter } from "next/router";
+
+// Icons
+import { Play } from "./Icons";
 
 const links = [
   {
@@ -23,15 +28,7 @@ export const Navbar: React.FC = () => {
           <Link href="/">
             <a className="flex items-center py-5 space-x-2 md:py-0 text-brand-dark-blue">
               <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 256 256"
-                >
-                  <rect width="256" height="256" fill="none"></rect>
-                  <path d="M232.3,114.3,88.3,26.4a15.5,15.5,0,0,0-16.1-.3A15.8,15.8,0,0,0,64,40V216a15.8,15.8,0,0,0,8.2,13.9,15.5,15.5,0,0,0,16.1-.3l144-87.9a16,16,0,0,0,0-27.4Z"></path>
-                </svg>
+                <Play className="w-6 h-6" />
               </div>
 
               <span className="text-lg font-semibold">Movie App</span>
@@ -57,14 +54,7 @@ export const Navbar: React.FC = () => {
 
         <ul className="items-center hidden space-x-2 md:flex">
           <li className="flex items-center space-x-4 ">
-            <a
-              href="https://eggsy.xyz"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium text-gray-700 hover:underline"
-            >
-              Eggsy
-            </a>
+            <span className="font-medium text-gray-700">Eggsy</span>
 
             <div className="flex items-center space-x-2">
               <Image
