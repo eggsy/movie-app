@@ -4,12 +4,16 @@ import { useRouter } from "next/router";
 import type { NextPage } from "next";
 
 // Hooks
-import { useInfo } from "../../hooks/useInfo";
+import useInfo from "../../hooks/useInfo";
 
 // Functions
 import getGenreEmoji from "../../functions/getGenreEmoji";
 import getDaysLeft from "../../functions/getDaysLeft";
 import getFormattedDate from "../../functions/getFormattedDate";
+import getPrettyInfo from "../../functions/getPrettyInfo";
+
+// Components
+import PageLoader from "../../components/Page/Loader";
 
 const SeriesPage: NextPage = () => {
   const { query } = useRouter();
@@ -18,23 +22,16 @@ const SeriesPage: NextPage = () => {
     "tv"
   );
 
-  if (loading) return <p>Loading...</p>;
-  else if (error) return <p>Error!</p>;
+  if (loading || error) return <PageLoader seasons={true} error={error} />;
   else if (data) {
-    const titleExtra = data.name !== data.original_name && data.original_name;
-
-    const genres = [...data.genres.map(({ name }) => name)];
-    if (data.adult) genres.push("Adult");
-
-    const posterUrl = `https://image.tmdb.org/t/p/w342${data.poster_path}`;
-    const backgroundUrl = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
-
-    const sortedCompanies = [...data.production_companies].sort((a, b) => {
-      if (a.logo_path && !b.logo_path) return -1;
-      return 0;
-    });
-
-    const goodRating = data.vote_average > 5;
+    const {
+      titleExtra,
+      genres,
+      posterUrl,
+      backgroundUrl,
+      sortedCompanies,
+      goodRating,
+    } = getPrettyInfo(data);
 
     return (
       <>
@@ -47,43 +44,45 @@ const SeriesPage: NextPage = () => {
 
         <div className="px-6 space-y-52 md:px-0">
           <div className="flex flex-col items-center gap-10">
-            <div
-              className="flex-shrink-0 w-48 overflow-hidden bg-center bg-no-repeat bg-cover rounded-md h-72"
-              style={{
-                backgroundImage: `url('${posterUrl}')`,
-              }}
-            />
-
-            <div className="flex flex-col items-center gap-4 text-center">
-              {data.next_episode_to_air && (
-                <div className="px-2 py-1 mx-auto font-medium text-gray-700 rounded-md select-none w-max bg-gray-300/30 backdrop-blur-sm">
-                  🔥{" "}
-                  <span className="font-medium">
-                    S{data.next_episode_to_air.season_number} E
-                    {data.next_episode_to_air.episode_number} in{" "}
-                    {getDaysLeft(data.next_episode_to_air.air_date)} days
-                  </span>
+            <div className="p-1 rounded-md bg-white/10 backdrop-blur-xl">
+              <div
+                className="relative flex-shrink-0 w-48 bg-center bg-no-repeat bg-cover rounded-md h-72"
+                style={{
+                  backgroundImage: `url('${posterUrl}')`,
+                }}
+              >
+                <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
+                  <Rating goodRating={goodRating} />
                 </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center gap-6 text-center">
+              {data.next_episode_to_air && (
+                <DaysTillNextEpisode
+                  date={data.next_episode_to_air.air_date}
+                  season={data.next_episode_to_air.season_number}
+                  episode={data.next_episode_to_air.episode_number}
+                />
               )}
 
-              <h1 className="text-4xl font-bold text-gray-800">
-                {data.name} {titleExtra && `(${titleExtra})`}
-              </h1>
+              <div className="flex-col">
+                <h1 className="text-4xl font-bold text-gray-800">
+                  {data.name} {titleExtra && `(${titleExtra})`}
+                </h1>
+
+                {data.tagline && (
+                  <p className="truncate opacity-50">{data.tagline}</p>
+                )}
+              </div>
 
               <div className="space-y-2">
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2 mx-auto md:w-2/3">
                   {genres.map((genre) => (
-                    <div
-                      key={genre}
-                      className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40"
-                    >
-                      {getGenreEmoji(genre)} {genre}
-                    </div>
+                    <Genre key={genre} genre={genre} />
                   ))}
-                </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-2">
-                  <span className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40 backdrop-blur-sm">
+                  <span className="px-2 py-1 text-sm font-medium text-white bg-yellow-600 rounded-md select-none">
                     👀 {data.number_of_episodes} Ep / {data.number_of_seasons}S
                   </span>
 
@@ -97,20 +96,18 @@ const SeriesPage: NextPage = () => {
                   >
                     {goodRating ? "👍" : "👎"} {data.vote_average}
                   </span>
-                </div>
 
-                {data.homepage && (
-                  <div>
+                  {data.homepage && (
                     <a
                       href={data.homepage}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40 backdrop-blur-sm hover:bg-gray-300/60"
+                      className="px-2 py-1 text-sm font-medium text-white transition-colors rounded-md select-none bg-brand-dark-blue backdrop-blur-sm hover:bg-brand-dark-blue/90"
                     >
                       🔗 Website
                     </a>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -139,21 +136,7 @@ const SeriesPage: NextPage = () => {
 
               <div className="grid grid-cols-2 gap-4 text-gray-600 md:grid-cols-3">
                 {data.seasons.map(({ id: seasonId, name, poster_path }) => (
-                  <div
-                    key={seasonId}
-                    className="relative w-40 bg-center bg-cover rounded-md shadow-sm h-60"
-                    style={{
-                      backgroundImage: `url('https://image.tmdb.org/t/p/w342${poster_path}')`,
-                    }}
-                  >
-                    <div className="absolute inset-x-0 bottom-0 p-4 text-white bg-gradient-to-t from-black/70 rounded-b-md">
-                      <div className="px-2 py-1 truncate rounded-md bg-white/10 backdrop-blur-sm">
-                        <span className="text-sm leading-none truncate">
-                          {name}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <Season key={seasonId} name={name} poster={poster_path} />
                 ))}
               </div>
             </div>
@@ -164,18 +147,7 @@ const SeriesPage: NextPage = () => {
 
             <div className="space-y-6 text-gray-600 md:w-1/4">
               {sortedCompanies.map(({ name, logo_path }) => (
-                <div key={name}>
-                  {logo_path && (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      key={name}
-                      src={`https://image.tmdb.org/t/p/w500${logo_path}`}
-                      alt="company logo"
-                    />
-                  )}
-
-                  <span>{name}</span>
-                </div>
+                <Company key={name} name={name} logo={logo_path} />
               ))}
             </div>
           </div>
@@ -184,5 +156,80 @@ const SeriesPage: NextPage = () => {
     );
   } else return <div>Could not find that series.</div>;
 };
+
+const DaysTillNextEpisode: React.FC<{
+  season: number;
+  episode: number;
+  date: string;
+}> = ({ season, episode, date }) => {
+  const daysUntilNextEpisode = getDaysLeft(date);
+
+  return (
+    <div className="px-2 py-1 mx-auto font-medium text-gray-700 rounded-md select-none w-max bg-gray-300/30 backdrop-blur-sm">
+      🔥{" "}
+      <span className="font-medium">
+        S{season} E{episode} in{" "}
+        {daysUntilNextEpisode === 0 ? "Today" : `${daysUntilNextEpisode} days`}
+      </span>
+    </div>
+  );
+};
+
+const Season: React.FC<{ poster: string; name: string }> = ({
+  poster,
+  name,
+}) => (
+  <div
+    className="relative w-40 bg-center bg-cover rounded-md shadow-sm h-60"
+    style={{
+      backgroundImage: `url('https://image.tmdb.org/t/p/w342${poster}')`,
+    }}
+  >
+    <div className="absolute inset-x-0 bottom-0 p-4 text-white bg-gradient-to-t from-black/70 rounded-b-md">
+      <div className="px-2 py-1 truncate rounded-md bg-white/10 backdrop-blur-sm">
+        <span className="text-sm leading-none truncate">{name}</span>
+      </div>
+    </div>
+  </div>
+);
+
+/*
+  THESE EXPORTED COMPONENTS ARE
+  ALSO USED BY OTHER PAGES
+*/
+
+export const Rating: React.FC<{ goodRating: boolean }> = ({ goodRating }) => (
+  <div
+    className={`overflow-hidden select-none flex items-center justify-center w-12 h-12   text-white text-2xl rounded-full ring-4 ring-white ${
+      goodRating ? "bg-green-600" : "bg-red-600"
+    }`}
+  >
+    {goodRating ? "👍" : "👎"}
+  </div>
+);
+
+export const Genre: React.FC<{ genre: string }> = ({ genre }) => (
+  <div className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40">
+    {getGenreEmoji(genre)} {genre}
+  </div>
+);
+
+export const Company: React.FC<{ logo?: string; name: string }> = ({
+  logo,
+  name,
+}) => (
+  <div>
+    {logo && (
+      /* eslint-disable-next-line @next/next/no-img-element */
+      <img
+        key={name}
+        src={`https://image.tmdb.org/t/p/w500${logo}`}
+        alt="company logo"
+      />
+    )}
+
+    <span>{name}</span>
+  </div>
+);
 
 export default SeriesPage;

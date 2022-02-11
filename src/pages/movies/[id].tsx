@@ -7,39 +7,32 @@ import type { NextPage } from "next";
 import { useInfo } from "../../hooks/useInfo";
 
 // Functions
-import getGenreEmoji from "../../functions/getGenreEmoji";
 import getFormattedDate from "../../functions/getFormattedDate";
+import getPrettyInfo from "../../functions/getPrettyInfo";
+
+// Components
+import PageLoader from "../../components/Page/Loader";
+import { Rating, Genre, Company } from "../series/[id]";
 
 const MoviePage: NextPage = () => {
   const { query } = useRouter();
   const { data, loading, error } = useInfo<MovieInfo>(query.id as string);
 
-  if (loading) return <p>Loading...</p>;
-  else if (error) return <p>Error!</p>;
+  if (loading || error) return <PageLoader error={error} />;
   else if (data) {
-    const titleExtra =
-      data.title !== data.original_title && data.original_title;
-
-    const genres = [...data.genres.map(({ name }) => name)];
-    if (data.adult) genres.push("Adult");
-
-    const posterUrl = `https://image.tmdb.org/t/p/w342${data.poster_path}`;
-    const backgroundUrl = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
-
-    const sortedCompanies = [...data.production_companies].sort((a, b) => {
-      if (a.logo_path && !b.logo_path) return -1;
-      return 0;
-    });
-
-    const goodRating = data.vote_average > 5;
-    const calculator = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
+    const {
+      titleExtra,
+      genres,
+      posterUrl,
+      backgroundUrl,
+      sortedCompanies,
+      goodRating,
+      calculator,
+    } = getPrettyInfo(data);
 
     return (
       <>
-        <div className="absolute inset-0 shadow-lg h-72 -z-10 bg-black/70 backdrop-filter backdrop-blur-sm">
+        <div className="absolute inset-0 h-72 -z-10 bg-black/70">
           <div
             className="inset-0 w-full h-full bg-cover h-90 w-90"
             style={{ backgroundImage: `url('${backgroundUrl}')` }}
@@ -48,32 +41,37 @@ const MoviePage: NextPage = () => {
 
         <div className="px-6 space-y-52 md:px-0">
           <div className="flex flex-col items-center gap-10">
-            <div
-              className="flex-shrink-0 w-48 overflow-hidden bg-center bg-no-repeat bg-cover rounded-md h-72"
-              style={{
-                backgroundImage: `url('${posterUrl}')`,
-              }}
-            />
+            <div className="p-1 rounded-md bg-white/10 backdrop-blur-xl">
+              <div
+                className="flex-shrink-0 w-48 bg-center bg-no-repeat bg-cover rounded-md h-72"
+                style={{
+                  backgroundImage: `url('${posterUrl}')`,
+                }}
+              >
+                <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
+                  <Rating goodRating={goodRating} />
+                </div>
+              </div>
+            </div>
 
-            <div className="flex flex-col items-center gap-4 text-center">
-              <h1 className="text-4xl font-bold text-gray-800">
-                {data.title} {titleExtra && `(${titleExtra})`}
-              </h1>
+            <div className="flex flex-col items-center gap-6 text-center">
+              <div className="flex-col">
+                <h1 className="text-4xl font-bold text-gray-800">
+                  {data.title} {titleExtra && `(${titleExtra})`}
+                </h1>
+
+                {data.tagline && (
+                  <p className="truncate opacity-50">{data.tagline}</p>
+                )}
+              </div>
 
               <div className="space-y-2">
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2 mx-auto md:w-2/3">
                   {genres.map((genre) => (
-                    <div
-                      key={genre}
-                      className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40"
-                    >
-                      {getGenreEmoji(genre)} {genre}
-                    </div>
+                    <Genre key={genre} genre={genre} />
                   ))}
-                </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-2">
-                  <span className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40">
+                  <span className="px-2 py-1 text-sm font-medium text-white bg-yellow-600 rounded-md select-none">
                     ⏱ {Math.floor(data.runtime / 60)}h {data.runtime % 60}m
                   </span>
 
@@ -87,20 +85,18 @@ const MoviePage: NextPage = () => {
                   >
                     {goodRating ? "👍" : "👎"} {data.vote_average}
                   </span>
-                </div>
 
-                {data.homepage && (
-                  <div>
+                  {data.homepage && (
                     <a
                       href={data.homepage}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40 backdrop-blur-sm hover:bg-gray-300/60"
+                      className="px-2 py-1 text-sm font-medium text-white transition-colors rounded-md select-none bg-brand-dark-blue backdrop-blur-sm hover:bg-brand-dark-blue/90"
                     >
                       🔗 Website
                     </a>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -150,18 +146,7 @@ const MoviePage: NextPage = () => {
 
             <div className="space-y-6 text-gray-600 md:w-1/4">
               {sortedCompanies.map(({ name, logo_path }) => (
-                <div key={name}>
-                  {logo_path && (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      key={name}
-                      src={`https://image.tmdb.org/t/p/w500${logo_path}`}
-                      alt="company logo"
-                    />
-                  )}
-
-                  <span>{name}</span>
-                </div>
+                <Company key={name} name={name} logo={logo_path} />
               ))}
             </div>
           </div>
