@@ -10,7 +10,7 @@ export const FeaturedCard: React.FC<{ movie: DiscoveryResult }> = ({
   return (
     <Link href={`/movies/${movie.id}`}>
       <a
-        className="w-full overflow-hidden transition-all transform bg-center bg-no-repeat bg-cover rounded-md hover:scale-105 group h-80"
+        className="w-full overflow-hidden transition-all transform bg-center bg-no-repeat bg-cover rounded-md md:hover:scale-105 group h-80"
         style={{
           backgroundImage: `url('${backdropUrl}')`,
         }}

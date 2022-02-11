@@ -16,7 +16,7 @@ export const MovieCard: React.FC<{
   return (
     <Link href={`/${path}/${movie.id}`}>
       <a
-        className="w-full overflow-hidden transition-all transform bg-center bg-no-repeat bg-cover rounded-md hover:scale-110 group h-80"
+        className="w-full overflow-hidden transition-all transform bg-center bg-no-repeat bg-cover rounded-md md:hover:scale-110 group h-80"
         style={{
           backgroundImage: `url('${imageUrl}')`,
         }}
