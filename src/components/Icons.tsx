@@ -31,29 +31,48 @@ export const Search: React.FC<{ className: string }> = ({ className }) => (
   </svg>
 );
 
-export const Thumb: React.FC<{ className: string }> = ({ className }) => (
+export const Play: React.FC<{ className: string }> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="#fff"
     className={className}
+    fill="currentColor"
     viewBox="0 0 256 256"
   >
     <rect width="256" height="256" fill="none"></rect>
-    <path
-      d="M32,104H80a0,0,0,0,1,0,0V208a0,0,0,0,1,0,0H32a8,8,0,0,1-8-8V112A8,8,0,0,1,32,104Z"
+    <path d="M232.3,114.3,88.3,26.4a15.5,15.5,0,0,0-16.1-.3A15.8,15.8,0,0,0,64,40V216a15.8,15.8,0,0,0,8.2,13.9,15.5,15.5,0,0,0,16.1-.3l144-87.9a16,16,0,0,0,0-27.4Z"></path>
+  </svg>
+);
+
+export const Close: React.FC<{ className: string }> = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 256 256"
+    className={className}
+  >
+    <rect width="256" height="256" fill="none"></rect>
+    <line
+      x1="200"
+      y1="56"
+      x2="56"
+      y2="200"
       fill="none"
-      stroke="#fff"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="24"
-    ></path>
-    <path
-      d="M80,104l40-80a32,32,0,0,1,32,32V80h61.9a15.9,15.9,0,0,1,15.8,18l-12,96a16,16,0,0,1-15.8,14H80"
+    ></line>
+
+    <line
+      x1="200"
+      y1="200"
+      x2="56"
+      y2="56"
       fill="none"
-      stroke="#fff"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="24"
-    ></path>
+    ></line>
   </svg>
 );
