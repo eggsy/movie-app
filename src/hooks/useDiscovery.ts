@@ -2,9 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 import useSWR from "swr";
 
+const host =
+  process.env.NODE_ENV === "production" && process.env.HOST
+    ? process.env.HOST
+    : "http://localhost:3000";
+
 // Fetcher
 const fetcher = <T>(url: string) =>
-  axios.get<T>(`http://localhost:3000${url}`).then((res) => res.data);
+  axios.get<T>(host + url).then((res) => res.data);
 
 export const useDiscovery = () => {
   const [data, setData] = useState<DiscoveryResult[]>();
