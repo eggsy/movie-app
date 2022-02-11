@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-[url('/background.svg')] bg-fixed bg-no-repeat bg-cover;
-}
-
 .input {
   @apply px-4 py-2 text-gray-600 bg-gray-200 rounded-sm outline-none appearance-none ring-2 ring-gray-300/50;
 }
