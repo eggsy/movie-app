@@ -1,5 +1,6 @@
-// Types
 import Link from "next/link";
+
+// Types
 import type { Person } from "../../types";
 
 export const PersonCard: React.FC<{ person: Person }> = ({ person }) => {
