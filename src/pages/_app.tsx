@@ -62,7 +62,6 @@ function MovieApp({ Component, pageProps }: AppProps) {
   );
 }
 
-// TODO Actor pages
 // TODO Search, categories and stuff
 // TODO Studio pages
 // TODO fix missing animation on title names of cards
