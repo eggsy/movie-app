@@ -54,7 +54,7 @@ const SeriesPage: NextPage = () => {
                 }}
               >
                 {series.trailer && (
-                  <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
+                  <div className="absolute inset-x-0 z-10 flex -bottom-6">
                     <Trailer
                       poster={backgroundUrl}
                       videoId={series.trailer.key}
@@ -193,23 +193,24 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
   videoId,
   poster,
 }) => (
-  <motion.a
-    href={`https://youtube.com/watch?v=${videoId}`}
-    target="_blank"
-    rel="noreferrer"
-    className="bg-center bg-cover rounded-full w-14 h-14"
-    title="Play Trailer"
-    style={{
-      backgroundImage: `url('${poster}')`,
-    }}
-    whileHover={{
-      scale: 1.1,
-    }}
-  >
-    <div className="flex ring-4 ring-white items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[1px]">
-      <Play className="w-6 h-6" />
-    </div>
-  </motion.a>
+  <Tooltip title="Trailer" position="top" className="mx-auto rounded-full w-14 h-14">
+    <motion.a
+      href={`https://youtube.com/watch?v=${videoId}`}
+      target="_blank"
+      rel="noreferrer"
+      className="absolute inset-0 mx-auto bg-center bg-cover rounded-full h-14 w-14"
+      style={{
+        backgroundImage: `url('${poster}')`,
+      }}
+      whileHover={{
+        scale: 1.1,
+      }}
+    >
+      <div className="flex ring-4 ring-white items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[1px]">
+        <Play className="w-6 h-6" />
+      </div>
+    </motion.a>
+  </Tooltip>
 );
 
 export const Genre: React.FC<{ genre: string }> = ({ genre }) => (
