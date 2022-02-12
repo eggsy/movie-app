@@ -12,5 +12,9 @@ export default async function handler(
   const id = query.id as string;
   const type = query.type as "movie" | "tv";
 
+  if (!id || !type) {
+    res.status(400).json({ error: "No :id or :type provided" });
+  }
+
   res.status(200).json(await TmdbApi.getInfo(id, type));
 }
