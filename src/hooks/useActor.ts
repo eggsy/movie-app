@@ -5,10 +5,7 @@ import useSWR from "swr";
 // Fetcher
 const fetcher = <T>(url: string) => axios.get<T>(url).then((res) => res.data);
 
-export const useActor = <ActorInfo>(
-  actorId: string,
-  type: "movie" | "tv" = "movie"
-) => {
+export const useActor = (actorId: string) => {
   const [data, setData] = useState<ActorInfo>();
   const [error, setError] = useState(null);
 
