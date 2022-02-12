@@ -94,11 +94,13 @@ const SearchPage: NextPage = () => {
       movies: sortedMovies,
       series: sortedSeries,
       people: sortedActors,
+      noResults:
+        !sortedMovies.length && !sortedSeries.length && !sortedActors.length,
     };
   }, [data, sortValue]);
 
   return (
-    <div className="space-y-36">
+    <div className="space-y-24">
       <div className="space-y-4">
         <h1 className="text-4xl font-semibold text-gray-800">Search</h1>
 
@@ -121,6 +123,10 @@ const SearchPage: NextPage = () => {
           </div>
         </div>
       </div>
+
+      {!loading && getSortedValues.noResults && (
+        <div>Nothing found with that query.</div>
+      )}
 
       {loading ? (
         new Array(3).fill(0).map((_, i) => (
