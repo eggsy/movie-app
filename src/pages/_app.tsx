@@ -5,8 +5,9 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
-// Import Tailwind CSS
+// Import global CSS
 import "../styles/tailwind.css";
+import "react-tippy/dist/tippy.css";
 
 // Types
 import type { AppProps } from "next/app";
@@ -61,9 +62,5 @@ function MovieApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
-
-// TODO Search, categories and stuff
-// TODO Studio pages
-// TODO fix missing animation on title names of cards
 
 export default MovieApp;
