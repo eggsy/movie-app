@@ -1,4 +1,6 @@
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
+import { Tooltip } from "react-tippy";
 
 // Types
 import type { NextPage } from "next";
@@ -17,25 +19,21 @@ import PageLoader from "../../components/Page/Loader";
 import PersonCard from "../../components/Card/Person";
 
 // Icons
-import { Play } from "../../components/Icons";
+import { Link, Play } from "../../components/Icons";
+import PageItem from "../../components/Page/Item";
 
 const SeriesPage: NextPage = () => {
   const { query } = useRouter();
-  const { data, loading, error } = useInfo<SeriesInfo>(
-    query.id as string,
-    "tv"
-  );
+  const {
+    data: series,
+    loading,
+    error,
+  } = useInfo<SeriesInfo>(query.id as string, "tv");
 
   if (loading || error) return <PageLoader seasons={true} error={error} />;
-  else if (data) {
-    const {
-      titleExtra,
-      genres,
-      posterUrl,
-      backgroundUrl,
-      sortedCompanies,
-      goodRating,
-    } = getPrettyInfo(data);
+  else if (series) {
+    const { titleExtra, genres, posterUrl, backgroundUrl } =
+      getPrettyInfo(series);
 
     return (
       <>
@@ -55,11 +53,11 @@ const SeriesPage: NextPage = () => {
                   backgroundImage: `url('${posterUrl}')`,
                 }}
               >
-                {data.trailer && (
+                {series.trailer && (
                   <div className="absolute inset-x-0 z-50 flex justify-center -bottom-6">
                     <Trailer
                       poster={backgroundUrl}
-                      videoId={data.trailer.key}
+                      videoId={series.trailer.key}
                     />
                   </div>
                 )}
@@ -67,109 +65,77 @@ const SeriesPage: NextPage = () => {
             </div>
 
             <div className="flex flex-col items-center gap-6 text-center">
-              {data.next_episode_to_air && (
+              {series.next_episode_to_air && (
                 <DaysTillNextEpisode
-                  date={data.next_episode_to_air.air_date}
-                  season={data.next_episode_to_air.season_number}
-                  episode={data.next_episode_to_air.episode_number}
+                  date={series.next_episode_to_air.air_date}
+                  season={series.next_episode_to_air.season_number}
+                  episode={series.next_episode_to_air.episode_number}
                 />
               )}
 
-              <div className="flex-col">
+              <div className="space-y-1">
                 <h1 className="text-4xl font-bold text-gray-800">
-                  {data.name} {titleExtra && `(${titleExtra})`}
+                  {series.name} {titleExtra && `(${titleExtra})`}
                 </h1>
 
-                {data.tagline && (
-                  <p className="truncate opacity-50">{data.tagline}</p>
+                {series.tagline && (
+                  <p className="w-3/4 mx-auto opacity-50 md:w-full">
+                    {series.tagline}
+                  </p>
                 )}
               </div>
 
-              <div className="space-y-2">
-                <div className="flex flex-wrap justify-center gap-2 mx-auto md:w-2/3">
+              <div className="space-y-4">
+                <div className="flex flex-wrap justify-center gap-2 mx-auto">
                   {genres.map((genre) => (
                     <Genre key={genre} genre={genre} />
                   ))}
 
-                  <span className="px-2 py-1 text-sm font-medium text-white bg-yellow-600 rounded-md select-none">
-                    👀 {data.number_of_episodes} Ep / {data.number_of_seasons}S
-                  </span>
+                  <Rating rating={series.vote_average} />
+                  {series.homepage && <Homepage link={series.homepage} />}
+                </div>
 
-                  <span
-                    className={
-                      (goodRating
-                        ? "text-green-700 bg-green-300/50"
-                        : "text-red-700 bg-red-300/50") +
-                      " px-2 py-1 text-sm font-medium rounded-md backdrop-blur-sm select-none"
-                    }
-                  >
-                    {goodRating ? "👍" : "👎"} {data.vote_average}
-                  </span>
-
-                  {data.homepage && (
-                    <a
-                      href={data.homepage}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="px-2 py-1 text-sm font-medium text-white transition-colors rounded-md select-none bg-brand-dark-blue backdrop-blur-sm hover:bg-brand-dark-blue/90"
-                    >
-                      🔗 Homepage
-                    </a>
-                  )}
+                <div className="text-sm font-medium opacity-50 select-none">
+                  👀 {series.number_of_episodes} Ep / {series.number_of_seasons}
+                  S
                 </div>
               </div>
             </div>
           </div>
 
           <div className="space-y-40">
-            <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-              <h1 className="text-4xl font-bold text-gray-800">Overview</h1>
-
+            <PageItem title="Overview">
               <div className="text-gray-600">
-                {data.overview || "Wow... This is so empty."}
+                {series.overview || "Wow... This is so empty."}
               </div>
-            </div>
+            </PageItem>
 
-            <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-              <h1 className="text-4xl font-bold text-gray-800">
-                First Released On
-              </h1>
-
+            <PageItem title="First Released On">
               <div className="text-gray-600">
-                {getFormattedDate(data.first_air_date)}
+                {getFormattedDate(series.first_air_date)}
               </div>
-            </div>
+            </PageItem>
 
-            <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-              <h1 className="text-4xl font-bold text-gray-800">Seasons</h1>
-
-              <div className="grid grid-cols-2 gap-4 text-gray-600 md:grid-cols-3">
-                {data.seasons.map(({ id: seasonId, name, poster_path }) => (
-                  <Season key={seasonId} name={name} poster={poster_path} />
+            <PageItem title="Seasons">
+              <div className="grid w-full grid-cols-2 gap-4 text-gray-600 md:grid-cols-3">
+                {series.seasons?.map(({ id: seasonId, name, poster_path }) => (
+                  <SeasonCard key={seasonId} name={name} poster={poster_path} />
                 ))}
               </div>
-            </div>
+            </PageItem>
           </div>
 
-          <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-            <h1 className="text-4xl font-bold text-gray-800">Cast</h1>
-
+          <PageItem title="Cast">
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
-              {data.cast.map((cast, index) => (
-                <PersonCard key={index} person={cast} personAs={cast.as} />
+              {series.cast.map((cast, index) => (
+                <PersonCard
+                  key={index}
+                  person={cast}
+                  personAs={cast.character}
+                />
               ))}
             </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-            <h1 className="text-4xl font-bold text-gray-800">Studios</h1>
-
-            <div className="space-y-6 text-gray-600 md:w-1/4">
-              {sortedCompanies.map(({ name, logo_path }) => (
-                <Company key={name} name={name} logo={logo_path} />
-              ))}
-            </div>
-          </div>
+          </PageItem>
         </div>
       </>
     );
@@ -194,23 +160,29 @@ const DaysTillNextEpisode: React.FC<{
   );
 };
 
-const Season: React.FC<{ poster: string; name: string }> = ({
+const SeasonCard: React.FC<{ poster: string; name: string }> = ({
   poster,
   name,
-}) => (
-  <div
-    className="relative w-40 bg-center bg-cover rounded-md shadow-sm h-60"
-    style={{
-      backgroundImage: `url('https://image.tmdb.org/t/p/w342${poster}')`,
-    }}
-  >
-    <div className="absolute inset-x-0 bottom-0 p-4 text-white bg-gradient-to-t from-black/70 rounded-b-md">
-      <div className="px-2 py-1 truncate rounded-md bg-white/10 backdrop-blur-sm">
-        <span className="text-sm leading-none truncate">{name}</span>
+}) => {
+  const posterUrl = poster
+    ? `https://image.tmdb.org/t/p/w500${poster}`
+    : "/no-image.svg";
+
+  return (
+    <div
+      className="relative w-full bg-center bg-cover rounded-md shadow-sm h-80"
+      style={{
+        backgroundImage: `url('${posterUrl}')`,
+      }}
+    >
+      <div className="absolute inset-x-0 bottom-0 p-4 text-white bg-gradient-to-t from-black/70 rounded-b-md">
+        <div className="px-2 py-1 truncate rounded-md bg-white/10 backdrop-blur-sm">
+          <span className="text-sm leading-none truncate">{name}</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 /*
   THESE EXPORTED COMPONENTS ARE
@@ -221,7 +193,7 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
   videoId,
   poster,
 }) => (
-  <a
+  <motion.a
     href={`https://youtube.com/watch?v=${videoId}`}
     target="_blank"
     rel="noreferrer"
@@ -230,35 +202,59 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
     style={{
       backgroundImage: `url('${poster}')`,
     }}
+    whileHover={{
+      scale: 1.1,
+    }}
   >
-    <div className="flex items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[2px]">
+    <div className="flex ring-4 ring-white items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[1px]">
       <Play className="w-6 h-6" />
     </div>
-  </a>
+  </motion.a>
 );
 
 export const Genre: React.FC<{ genre: string }> = ({ genre }) => (
-  <div className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40">
-    {getGenreEmoji(genre)} {genre}
-  </div>
+  <Tooltip title={genre} position="bottom">
+    <motion.div
+      className="flex items-center justify-center w-12 h-12 text-2xl font-medium text-gray-700 rounded-full select-none bg-gray-200/40"
+      whileHover={{
+        scale: 1.1,
+      }}
+    >
+      {getGenreEmoji(genre)}
+    </motion.div>
+  </Tooltip>
 );
 
-export const Company: React.FC<{ logo?: string; name: string }> = ({
-  logo,
-  name,
-}) => (
-  <div>
-    {logo && (
-      /* eslint-disable-next-line @next/next/no-img-element */
-      <img
-        key={name}
-        src={`https://image.tmdb.org/t/p/w500${logo}`}
-        alt="company logo"
-      />
-    )}
+export const Rating: React.FC<{ rating: number }> = ({ rating }) => (
+  <Tooltip title="Average Rating" position="bottom">
+    <motion.span
+      className={`flex select-none items-center text-white justify-center w-12 h-12 p-2 rounded-full ${
+        rating > 5 ? "bg-green-600" : "bg-red-600"
+      }`}
+      whileHover={{
+        scale: 1.1,
+      }}
+    >
+      {rating}
+    </motion.span>
+  </Tooltip>
+);
 
-    <span>{name}</span>
-  </div>
+export const Homepage: React.FC<{ link: string }> = ({ link }) => (
+  <Tooltip title="Homepage" position="bottom">
+    <motion.a
+      href={link}
+      target="_blank"
+      rel="noreferrer"
+      className="flex items-center justify-center w-12 h-12 p-2 text-2xl text-white rounded-full bg-brand-dark-blue"
+      title="Visit Website"
+      whileHover={{
+        scale: 1.1,
+      }}
+    >
+      <Link className="w-6 h-6" />
+    </motion.a>
+  </Tooltip>
 );
 
 export default SeriesPage;

@@ -1,4 +1,6 @@
 import { useRouter } from "next/router";
+import { Tooltip } from "react-tippy";
+import { motion } from "framer-motion";
 
 // Types
 import type { NextPage } from "next";
@@ -12,21 +14,17 @@ import getFormattedDate from "../../functions/getFormattedDate";
 // Components
 import PageLoader from "../../components/Page/Loader";
 import MovieCard from "../../components/Card/Movie";
+import { Homepage } from "../series/[id]";
 
 const ActorPage: NextPage = () => {
   const { query } = useRouter();
-  const { data, loading, error } = useActor<ActorInfo>(query.id as string);
+  const { data, loading, error } = useActor(query.id as string);
 
-  if (loading || error) return <PageLoader error={error} />;
+  if (loading || error)
+    return <PageLoader error={error} trailerButton={false} />;
   else if (data) {
-    const imageUrl = `https://image.tmdb.org/t/p/w500${data.profile_path}`;
-    const backgroundUrl = `https://image.tmdb.org/t/p/original${data.cast?.[0]?.backdrop_path}`;
-    const gender = data.gender === 2 ? "Male" : "Female";
-
-    const departmentAndPlace = [
-      data.known_for_department,
-      data.place_of_birth,
-    ].filter((i) => i);
+    const { backgroundUrl, departmentAndPlace, gender, imageUrl } =
+      getPrettyActorInfo(data);
 
     return (
       <>
@@ -62,34 +60,30 @@ const ActorPage: NextPage = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="flex flex-wrap justify-center gap-2 mx-auto md:w-2/3">
-                  <span className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40">
-                    🐣 {getFormattedDate(data.birthday)}
-                  </span>
+                <div className="flex flex-wrap justify-center gap-2 mx-auto">
+                  {data.birthday && (
+                    <DetailIcon
+                      icon="🐣"
+                      title={getFormattedDate(data.birthday)}
+                    />
+                  )}
 
                   {data.deathday && (
-                    <span className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40">
-                      😢 {getFormattedDate(data.deathday)}
-                    </span>
+                    <DetailIcon
+                      icon="😢"
+                      title={getFormattedDate(data.deathday)}
+                    />
                   )}
 
-                  <span className="px-2 py-1 text-sm font-medium text-gray-700 rounded-md select-none bg-gray-300/40">
-                    👩‍❤️‍👨 {gender}
-                  </span>
-
-                  <span className="px-2 py-1 text-sm font-medium text-white bg-yellow-600 rounded-md select-none">
-                    📈 {data.popularity}
-                  </span>
-                  {data.homepage && (
-                    <a
-                      href={data.homepage}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="px-2 py-1 text-sm font-medium text-white transition-colors rounded-md select-none bg-brand-dark-blue backdrop-blur-sm hover:bg-brand-dark-blue/90"
-                    >
-                      🔗 Homepage
-                    </a>
+                  {gender && (
+                    <DetailIcon icon={gender.icon} title={gender.title} />
                   )}
+
+                  {data.popularity && (
+                    <DetailIcon icon="📈" title={data.popularity} />
+                  )}
+
+                  {data.homepage && <Homepage link={data.homepage} />}
                 </div>
               </div>
             </div>
@@ -99,7 +93,13 @@ const ActorPage: NextPage = () => {
             <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
               <h1 className="text-4xl font-bold text-gray-800">Biography</h1>
 
-              <div className="text-gray-600">{data.biography}</div>
+              <div className="text-gray-600">
+                {data.biography ? (
+                  data.biography
+                ) : (
+                  <span>Weird... They do not have a biography, yet.</span>
+                )}
+              </div>
             </div>
 
             <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
@@ -108,6 +108,7 @@ const ActorPage: NextPage = () => {
               </h1>
 
               <div className="text-gray-600 divide-gray-300">
+                {!data.also_known_as?.length && <span>Well, nothing.</span>}
                 {data.also_known_as?.map((name, index) => (
                   <span
                     key={name}
@@ -122,30 +123,74 @@ const ActorPage: NextPage = () => {
             <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
               <h1 className="text-4xl font-bold text-gray-800">Known For</h1>
 
-              <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
-                {data.cast?.map((cast, idx) => (
-                  <MovieCard
-                    key={idx}
-                    movie={{
-                      ...cast,
-                      genre_ids: [],
-                      media_type: "movie",
-                    }}
-                  />
-                ))}
-              </div>
+              {!data.cast?.length ? (
+                <span>Seems like nothing.</span>
+              ) : (
+                <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
+                  {data.cast?.map((cast, idx) => (
+                    <MovieCard
+                      key={idx}
+                      movie={{
+                        ...cast,
+                        genre_ids: [],
+                        media_type: "movie",
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
-            <h1 className="text-4xl font-bold text-gray-800">Studios</h1>
-
-            <div className="space-y-6 text-gray-600 md:w-1/4"></div>
           </div>
         </div>
       </>
     );
   } else return <div>Could not find that movie.</div>;
+};
+
+const DetailIcon: React.FC<{
+  title: string | number;
+  icon: string;
+}> = ({ title, icon }) => (
+  <Tooltip title={String(title)} position="bottom">
+    <motion.div
+      className="flex items-center justify-center w-12 h-12 text-2xl font-medium text-gray-700 rounded-full select-none bg-gray-200/40"
+      whileHover={{
+        scale: 1.1,
+      }}
+    >
+      {icon}
+    </motion.div>
+  </Tooltip>
+);
+
+const getPrettyActorInfo = (actor: ActorInfo) => {
+  const profilePath = actor.profile_path;
+  const backdropPath = actor.cast?.[0]?.backdrop_path;
+
+  const imageUrl = profilePath
+    ? `https://image.tmdb.org/t/p/w500${profilePath}`
+    : "/no-image.svg";
+
+  const backgroundUrl = backdropPath
+    ? `https://image.tmdb.org/t/p/original${backdropPath}`
+    : "/no-image.svg";
+
+  const gender = actor.gender === 2 ? "Male" : "Female";
+
+  const departmentAndPlace = [
+    actor.known_for_department,
+    actor.place_of_birth,
+  ].filter((i) => i);
+
+  return {
+    imageUrl,
+    backgroundUrl,
+    gender: {
+      title: gender,
+      icon: gender === "Male" ? "👨" : "👩",
+    },
+    departmentAndPlace,
+  };
 };
 
 export default ActorPage;
