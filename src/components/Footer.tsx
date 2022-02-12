@@ -1,13 +1,11 @@
+// Icons
+import { Github, Twitter, Link } from "../components/Icons";
+
 export const Footer: React.FC = () => (
-  <footer
-    className="mt-24 text-white bg-center bg-cover"
-    style={{
-      backgroundImage: "url('/footer-background.svg')",
-    }}
-  >
-    <div className="container px-6 py-32 mx-auto md:px-0">
-      <ul className="grid gap-10 md:gap-16 md:grid-cols-5">
-        <li className="p-8 space-y-4 rounded-md md:col-span-2 bg-white/10 backdrop-blur-xl">
+  <footer className="px-6 mt-24 text-gray-900 bg-center bg-cover shadow-md md:px-0 bg-gray-200/40">
+    <div className="mx-auto text-center py-14 md:w-3/12 md:px-0">
+      <div className="flex flex-col space-y-8">
+        <div className="space-y-4">
           <Title>Movie App</Title>
 
           <p className="opacity-50">
@@ -23,41 +21,37 @@ export const Footer: React.FC = () => (
             </a>
             .
           </p>
-        </li>
+        </div>
 
-        <li className="p-8 space-y-4 rounded-md bg-white/10 backdrop-blur-sm">
-          <Title>Follow Me</Title>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://github.com/eggsy"
+            className="hover:underline"
+          >
+            <Github className="w-8 h-8 transition-opacity hover:opacity-75" />
+          </a>
 
-          <ul className="flex flex-col items-start opacity-50">
-            <a
-              rel="noreferrer"
-              target="_blank"
-              href="https://github.com/eggsy"
-              className="hover:underline"
-            >
-              <li>GitHub</li>
-            </a>
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://twitter.com/eggsydev"
+            className="hover:underline"
+          >
+            <Twitter className="w-8 h-8 transition-opacity hover:opacity-75" />
+          </a>
 
-            <a
-              rel="noreferrer"
-              target="_blank"
-              href="https://twitter.com/eggsydev"
-              className="hover:underline"
-            >
-              <li>Twitter</li>
-            </a>
-
-            <a
-              rel="noreferrer"
-              className="hover:underline"
-              target="_blank"
-              href="https://eggsy.xyz"
-            >
-              <li>Website</li>
-            </a>
-          </ul>
-        </li>
-      </ul>
+          <a
+            rel="noreferrer"
+            className="hover:underline"
+            target="_blank"
+            href="https://eggsy.xyz"
+          >
+            <Link className="w-8 h-8 transition-opacity hover:opacity-75" />
+          </a>
+        </div>
+      </div>
     </div>
   </footer>
 );
