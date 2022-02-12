@@ -17,6 +17,7 @@ interface MovieInfo {
   release_date: string;
   revenue: number;
   runtime: number;
+  comments: Review[];
   spoken_languages: Spokenlanguage[];
   status: string;
   tagline: string;
@@ -36,6 +37,20 @@ interface Video {
   type: string;
   official: boolean;
   published_at: string;
+}
+
+interface Review {
+  id: string;
+  author: string;
+  content: string;
+  created_at: string;
+  url: string;
+  author_details: {
+    name: string;
+    username: string;
+    avatar_path: string;
+    rating: number | null;
+  };
 }
 
 interface Spokenlanguage {
