@@ -16,6 +16,10 @@ const links = [
     href: "/about",
     label: "About Us",
   },
+  {
+    href: "/search",
+    label: "Search",
+  },
 ];
 
 export const Navbar: React.FC = () => {
