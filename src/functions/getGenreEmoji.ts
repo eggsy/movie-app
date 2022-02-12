@@ -20,7 +20,7 @@ export const getGenreEmoji = (genre: string): string => {
       return "🔬";
 
     case "Comedy":
-      return "🎭";
+      return "🤣";
     case "Drama":
       return "🎬";
     case "Fantasy":
