@@ -14,6 +14,7 @@ import MovieCard from "../components/Card/Movie";
 import PersonCard from "../components/Card/Person";
 import LoaderCard from "../components/Card/Loader";
 import FeaturedCard from "../components/Card/Featured";
+import { SearchInput } from "./search";
 
 const Home: NextPage = () => {
   const { data, loading, error } = useHomeData();
@@ -66,8 +67,12 @@ const Home: NextPage = () => {
         <section className="space-y-6">
           <Heading>Watch Next</Heading>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {error && <p>Something went wrong! Please try again later.</p>}
+          {error && (
+            <p className="opacity-50">
+              Something went wrong! Please try again later.
+            </p>
+          )}
+          <div className="grid gap-6 md:grid-cols-3">
             {loading || error ? (
               <LoaderCard count={3} type="card-large" />
             ) : (
@@ -78,14 +83,33 @@ const Home: NextPage = () => {
           </div>
         </section>
 
+        <section className="flex flex-col items-start gap-6 p-8 text-white rounded-md bg-brand-blue md:flex-row md:justify-between md:items-center">
+          <div className="flex flex-col space-y-2">
+            <h2 className="text-xl font-semibold">Search</h2>
+
+            <p className="opacity-75">
+              Search for your favourite movie, show or actor!
+            </p>
+          </div>
+
+          <div className="w-full md:w-3/6">
+            <SearchInput />
+          </div>
+        </section>
+
         <section className="space-y-6">
           <div className="flex items-center justify-between space-x-2">
             <Heading>Trending Movies</Heading>
             <LinkText>See more</LinkText>
           </div>
 
+          {error && (
+            <p className="opacity-50">
+              Something went wrong! Please try again later.
+            </p>
+          )}
+
           <div className="grid grid-cols-2 gap-4 md:grid-cols-6">
-            {error && <p>Something went wrong! Please try again later.</p>}
             {loading || error ? (
               <LoaderCard count={6} />
             ) : (
@@ -102,8 +126,13 @@ const Home: NextPage = () => {
             <LinkText>See more</LinkText>
           </div>
 
+          {error && (
+            <p className="opacity-50">
+              Something went wrong! Please try again later.
+            </p>
+          )}
+
           <div className="grid grid-cols-2 gap-4 md:grid-cols-6">
-            {error && <p>Something went wrong! Please try again later.</p>}
             {loading || error ? (
               <LoaderCard count={6} />
             ) : (
@@ -120,8 +149,13 @@ const Home: NextPage = () => {
             <LinkText href="/actors">See more</LinkText>
           </div>
 
+          {error && (
+            <p className="opacity-50">
+              Something went wrong! Please try again later.
+            </p>
+          )}
+
           <div className="grid grid-cols-2 gap-4 md:grid-cols-6">
-            {error && <p>Something went wrong! Please try again later.</p>}
             {loading || error ? (
               <LoaderCard count={6} />
             ) : (
