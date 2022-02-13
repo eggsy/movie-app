@@ -30,10 +30,10 @@ export const PageLoader: React.FC<{
           </div>
 
           <div className="flex flex-wrap justify-center gap-2">
-            {new Array(6).fill(null).map((_, idx) => (
+            {new Array(4).fill(null).map((_, idx) => (
               <div
                 key={idx}
-                className="w-16 h-6 px-2 py-1 rounded-md bg-gray-300/40"
+                className="w-12 h-12 rounded-full animate-pulse bg-gray-300/40"
               />
             ))}
           </div>
