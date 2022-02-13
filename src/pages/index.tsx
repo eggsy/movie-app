@@ -83,7 +83,12 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section className="flex flex-col items-start gap-6 p-8 text-white rounded-md bg-brand-blue md:flex-row md:justify-between md:items-center">
+        <section
+          className="flex flex-col items-start gap-6 p-16 text-white bg-center bg-cover rounded-md bg-brand-blue md:flex-row md:justify-between md:items-center"
+          style={{
+            backgroundImage: `url('/search-container-background.svg')`,
+          }}
+        >
           <div className="flex flex-col space-y-2">
             <h2 className="text-xl font-semibold">Search</h2>
 
@@ -92,7 +97,7 @@ const Home: NextPage = () => {
             </p>
           </div>
 
-          <div className="w-full md:w-3/6">
+          <div className="w-full text-gray-100/40 md:w-3/6">
             <SearchInput />
           </div>
         </section>
