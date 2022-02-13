@@ -166,7 +166,7 @@ const RevenueAndBudget: React.FC<{
         {calculator.format(revenue)}
       </span>{" "}
       in total. That means they made profit around{" "}
-      <span className="font-semibold text-green-600 underline">
+      <span className="font-semibold text-green-700 underline">
         {calculator.format(revenue - budget)}
       </span>
       .
