@@ -19,7 +19,7 @@ export const ReviewCard: React.FC<{ review: Review }> = ({ review }) => {
       href={review.url}
       target="_blank"
       rel="noreferrer"
-      className="relative flex flex-col items-center gap-4 py-4 text-left rounded-md md:flex-row"
+      className="relative flex flex-col items-center gap-4 py-4 text-center rounded-md md:text-left md:flex-row"
     >
       <div
         className="relative z-0 flex-shrink-0 w-24 h-24 bg-center bg-cover rounded-lg"
@@ -37,7 +37,7 @@ export const ReviewCard: React.FC<{ review: Review }> = ({ review }) => {
       </div>
 
       <div className="space-y-1 overflow-hidden">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center space-x-2 md:justify-start">
           <h3 className="font-medium truncate">{review.author}</h3>
           <span className="opacity-20">
             {getFormattedDate(review.created_at)}
