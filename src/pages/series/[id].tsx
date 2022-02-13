@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { Tooltip } from "react-tippy";
@@ -37,6 +38,10 @@ const SeriesPage: NextPage = () => {
 
     return (
       <>
+        <Head>
+          <title>{series.name} - Movie App</title>
+        </Head>
+
         <div className="absolute inset-0 shadow-lg h-72 -z-10 bg-black/70 backdrop-filter backdrop-blur-sm">
           <div
             className="inset-0 w-full h-full bg-cover h-90 w-90"
@@ -193,7 +198,11 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
   videoId,
   poster,
 }) => (
-  <Tooltip title="Trailer" position="top" className="mx-auto rounded-full w-14 h-14">
+  <Tooltip
+    title="Trailer"
+    position="top"
+    className="mx-auto rounded-full w-14 h-14"
+  >
     <motion.a
       href={`https://youtube.com/watch?v=${videoId}`}
       target="_blank"

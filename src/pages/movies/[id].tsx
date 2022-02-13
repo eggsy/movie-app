@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 // Types
 import type { NextPage } from "next";
@@ -14,8 +15,8 @@ import getPrettyInfo from "../../functions/getPrettyInfo";
 import PageLoader from "../../components/Page/Loader";
 import PageItem from "../../components/Page/Item";
 import PersonCard from "../../components/Card/Person";
-import { Trailer, Genre, Homepage, Rating } from "../series/[id]";
 import ReviewCard from "../../components/Card/Review";
+import { Trailer, Genre, Homepage, Rating } from "../series/[id]";
 
 const MoviePage: NextPage = () => {
   const { query } = useRouter();
@@ -32,6 +33,10 @@ const MoviePage: NextPage = () => {
 
     return (
       <>
+        <Head>
+          <title>{movie.title} - Movie App</title>
+        </Head>
+
         <div className="absolute inset-0 h-72 -z-10 bg-black/70">
           <div
             className="inset-0 w-full h-full bg-cover h-90 w-90"
@@ -148,7 +153,7 @@ const RevenueAndBudget: React.FC<{
   calculator: Intl.NumberFormat;
 }> = ({ budget = 0, revenue = 0, calculator }) => {
   if (!budget && !revenue)
-    return <span>Seems like we do not have information on that</span>;
+    return <span>Seems like we do not have information on that.</span>;
 
   return (
     <div className="text-gray-600">

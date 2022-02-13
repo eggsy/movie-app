@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { Tooltip } from "react-tippy";
 import { motion } from "framer-motion";
@@ -18,16 +19,20 @@ import { Homepage } from "../series/[id]";
 
 const ActorPage: NextPage = () => {
   const { query } = useRouter();
-  const { data, loading, error } = useActor(query.id as string);
+  const { data: person, loading, error } = useActor(query.id as string);
 
   if (loading || error)
     return <PageLoader error={error} trailerButton={false} />;
-  else if (data) {
+  else if (person) {
     const { backgroundUrl, departmentAndPlace, gender, imageUrl } =
-      getPrettyActorInfo(data);
+      getPrettyActorInfo(person);
 
     return (
       <>
+        <Head>
+          <title>{person.name} - Movie App</title>
+        </Head>
+
         <div className="absolute inset-0 h-72 -z-10 bg-black/70">
           <div
             className="inset-0 w-full h-full bg-cover h-90 w-90"
@@ -49,7 +54,7 @@ const ActorPage: NextPage = () => {
             <div className="flex flex-col items-center gap-6 text-center">
               <div className="flex-col">
                 <h1 className="text-4xl font-bold text-gray-800">
-                  {data.name}
+                  {person.name}
                 </h1>
 
                 {departmentAndPlace.length > 0 && (
@@ -61,17 +66,17 @@ const ActorPage: NextPage = () => {
 
               <div className="space-y-2">
                 <div className="flex flex-wrap justify-center gap-2 mx-auto">
-                  {data.birthday && (
+                  {person.birthday && (
                     <DetailIcon
                       icon="🐣"
-                      title={getFormattedDate(data.birthday)}
+                      title={getFormattedDate(person.birthday)}
                     />
                   )}
 
-                  {data.deathday && (
+                  {person.deathday && (
                     <DetailIcon
                       icon="😢"
-                      title={getFormattedDate(data.deathday)}
+                      title={getFormattedDate(person.deathday)}
                     />
                   )}
 
@@ -79,11 +84,11 @@ const ActorPage: NextPage = () => {
                     <DetailIcon icon={gender.icon} title={gender.title} />
                   )}
 
-                  {data.popularity && (
-                    <DetailIcon icon="📈" title={data.popularity} />
+                  {person.popularity && (
+                    <DetailIcon icon="📈" title={person.popularity} />
                   )}
 
-                  {data.homepage && <Homepage link={data.homepage} />}
+                  {person.homepage && <Homepage link={person.homepage} />}
                 </div>
               </div>
             </div>
@@ -94,8 +99,8 @@ const ActorPage: NextPage = () => {
               <h1 className="text-4xl font-bold text-gray-800">Biography</h1>
 
               <div className="text-gray-600">
-                {data.biography ? (
-                  data.biography
+                {person.biography ? (
+                  person.biography
                 ) : (
                   <span>Weird... They do not have a biography, yet.</span>
                 )}
@@ -108,8 +113,8 @@ const ActorPage: NextPage = () => {
               </h1>
 
               <div className="text-gray-600 divide-gray-300">
-                {!data.also_known_as?.length && <span>Well, nothing.</span>}
-                {data.also_known_as?.map((name, index) => (
+                {!person.also_known_as?.length && <span>Well, nothing.</span>}
+                {person.also_known_as?.map((name, index) => (
                   <span
                     key={name}
                     className={"px-3" + (index % 2 === 0 ? " opacity-50" : "")}
@@ -123,11 +128,11 @@ const ActorPage: NextPage = () => {
             <div className="flex flex-col items-center gap-4 mx-auto text-center md:w-1/2">
               <h1 className="text-4xl font-bold text-gray-800">Known For</h1>
 
-              {!data.cast?.length ? (
+              {!person.cast?.length ? (
                 <span>Seems like nothing.</span>
               ) : (
                 <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
-                  {data.cast?.map((cast, idx) => (
+                  {person.cast?.map((cast, idx) => (
                     <MovieCard
                       key={idx}
                       movie={{
