@@ -29,28 +29,27 @@ export const Navbar: React.FC = () => {
     <nav className="space-x-6 bg-white shadow-sm">
       <div className="container flex items-center justify-center mx-auto space-x-6 md:justify-between">
         <div className="flex items-center md:space-x-14">
-          <Link href="/">
-            <a className="flex items-center py-5 space-x-2 md:py-0 text-brand-dark-blue">
-              <div>
-                <Play className="w-6 h-6" />
-              </div>
+          <Link
+            href="/"
+            className="flex items-center py-5 space-x-2 md:py-0 text-brand-dark-blue"
+          >
+            <div>
+              <Play className="w-6 h-6" />
+            </div>
 
-              <span className="text-lg font-semibold">Movie App</span>
-            </a>
+            <span className="text-lg font-semibold">Movie App</span>
           </Link>
 
           <ul className="items-center hidden md:flex">
             {links.map((link) => (
               <Link href={link.href} key={link.label}>
-                <a>
-                  <li
-                    className={`h-full p-6 font-medium text-brand-dark-blue transition-colors hover:bg-gray-200 ${
-                      route === link.href && "bg-gray-200"
-                    }`}
-                  >
-                    {link.label}
-                  </li>
-                </a>
+                <li
+                  className={`h-full p-6 font-medium text-brand-dark-blue transition-colors hover:bg-gray-200 ${
+                    route === link.href && "bg-gray-200"
+                  }`}
+                >
+                  {link.label}
+                </li>
               </Link>
             ))}
           </ul>

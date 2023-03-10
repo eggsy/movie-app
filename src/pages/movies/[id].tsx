@@ -83,7 +83,7 @@ const MoviePage: NextPage = () => {
                     <Genre key={genre} genre={genre} />
                   ))}
 
-                  <Rating rating={movie.vote_average} />
+                  <Rating rating={movie.vote_average.toFixed(1)} />
                   {movie.homepage && <Homepage link={movie.homepage} />}
                 </div>
               </div>

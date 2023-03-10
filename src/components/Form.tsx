@@ -41,10 +41,11 @@ export const Form: React.FC = () => (
           placeholder="What are you searching for?"
         />
 
-        <Link href={"/"}>
-          <a className="absolute inset-y-0 right-0 flex items-center justify-center h-full px-4 bg-gray-200 rounded-r-md">
-            <Search className="flex-shrink-0 w-6 h-6" />
-          </a>
+        <Link
+          href={"/"}
+          className="absolute inset-y-0 right-0 flex items-center justify-center h-full px-4 bg-gray-200 rounded-r-md"
+        >
+          <Search className="flex-shrink-0 w-6 h-6" />
         </Link>
       </div>
     </div>

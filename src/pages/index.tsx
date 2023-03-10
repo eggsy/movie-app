@@ -45,10 +45,11 @@ const Home: NextPage = () => {
               Join Now
             </button>
 
-            <Link href="/about">
-              <a className="hidden px-10 py-2 text-gray-700 transition-colors rounded-md md:block hover:bg-gray-100/70">
-                Learn More
-              </a>
+            <Link
+              href="/about"
+              className="hidden px-10 py-2 text-gray-700 transition-colors rounded-md md:block hover:bg-gray-100/70"
+            >
+              Learn More
             </Link>
           </div>
         </div>

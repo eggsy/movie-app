@@ -16,7 +16,7 @@ export const MovieCard: React.FC<{
 
   return (
     <Link href={`/${path}/${movie.id}`} passHref>
-      <motion.a
+      <motion.div
         className="relative w-full bg-center bg-no-repeat bg-cover rounded-md h-80"
         style={{
           backgroundImage: `url('${imageUrl}')`,
@@ -26,7 +26,7 @@ export const MovieCard: React.FC<{
         }}
       >
         <div className="absolute flex items-center px-2 py-1 space-x-2 text-xs text-white rounded-md bg-white/10 top-3 left-3 backdrop-blur-sm">
-          <span>👍 {movie.vote_average}</span>
+          <span>👍 {movie.vote_average.toFixed(1)}</span>
         </div>
 
         <motion.div
@@ -52,7 +52,7 @@ export const MovieCard: React.FC<{
             {movie.title || movie.name}
           </motion.h3>
         </motion.div>
-      </motion.a>
+      </motion.div>
     </Link>
   );
 };

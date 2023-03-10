@@ -96,7 +96,7 @@ const SeriesPage: NextPage = () => {
                     <Genre key={genre} genre={genre} />
                   ))}
 
-                  <Rating rating={series.vote_average} />
+                  <Rating rating={series.vote_average.toFixed(1)} />
                   {series.homepage && <Homepage link={series.homepage} />}
                 </div>
 
@@ -203,7 +203,7 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
     position="top"
     className="mx-auto rounded-full w-14 h-14"
   >
-    <motion.a
+    <motion.div
       href={`https://youtube.com/watch?v=${videoId}`}
       target="_blank"
       rel="noreferrer"
@@ -218,7 +218,7 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
       <div className="flex ring-4 ring-white items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[1px]">
         <Play className="w-6 h-6" />
       </div>
-    </motion.a>
+    </motion.div>
   </Tooltip>
 );
 
@@ -235,11 +235,11 @@ export const Genre: React.FC<{ genre: string }> = ({ genre }) => (
   </Tooltip>
 );
 
-export const Rating: React.FC<{ rating: number }> = ({ rating }) => (
+export const Rating = ({ rating }: { rating: string }) => (
   <Tooltip title="Average Rating" position="bottom">
     <motion.span
       className={`flex select-none items-center text-white justify-center w-12 h-12 p-2 rounded-full ${
-        rating > 5 ? "bg-green-600" : "bg-red-600"
+        parseInt(rating) > 5 ? "bg-green-600" : "bg-red-600"
       }`}
       whileHover={{
         scale: 1.1,
@@ -250,7 +250,7 @@ export const Rating: React.FC<{ rating: number }> = ({ rating }) => (
   </Tooltip>
 );
 
-export const Homepage: React.FC<{ link: string }> = ({ link }) => (
+export const Homepage = ({ link }: { link: string }) => (
   <Tooltip title="Homepage" position="bottom">
     <motion.a
       href={link}

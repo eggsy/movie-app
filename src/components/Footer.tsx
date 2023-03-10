@@ -1,4 +1,5 @@
 // Icons
+import { PropsWithChildren } from "react";
 import { Github, Twitter, Link } from "../components/Icons";
 
 export const Footer: React.FC = () => (
@@ -56,7 +57,7 @@ export const Footer: React.FC = () => (
   </footer>
 );
 
-const Title: React.FC = ({ children }) => (
+const Title = ({ children }: PropsWithChildren) => (
   <span className="text-xl font-semibold">{children}</span>
 );
 

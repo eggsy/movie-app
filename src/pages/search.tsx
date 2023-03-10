@@ -1,5 +1,5 @@
 import { useDebounce } from "use-debounce";
-import { useEffect, useMemo, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
 // Types
@@ -208,11 +208,14 @@ export const SearchInput: React.FC<{
   );
 };
 
-const Item: React.FC<{ title: string; length: number }> = ({
+const Item = ({
   title,
   length,
   children,
-}) => (
+}: PropsWithChildren<{
+  title: string;
+  length: number;
+}>) => (
   <section className="space-y-6">
     <Heading>
       {title} <span className="text-sm opacity-50">({length})</span>

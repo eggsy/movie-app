@@ -10,7 +10,7 @@ export const FeaturedCard: React.FC<{ movie: DiscoveryResult }> = ({
 
   return (
     <Link href={`/movies/${movie.id}`} passHref>
-      <motion.a
+      <motion.div
         whileHover={{
           scale: 1.05,
         }}
@@ -49,7 +49,7 @@ export const FeaturedCard: React.FC<{ movie: DiscoveryResult }> = ({
             </div>
           </div>
         </div>
-      </motion.a>
+      </motion.div>
     </Link>
   );
 };
