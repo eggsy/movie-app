@@ -203,7 +203,7 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
     position="top"
     className="mx-auto rounded-full w-14 h-14"
   >
-    <motion.div
+    <motion.a
       href={`https://youtube.com/watch?v=${videoId}`}
       target="_blank"
       rel="noreferrer"
@@ -218,7 +218,7 @@ export const Trailer: React.FC<{ videoId: string; poster: string }> = ({
       <div className="flex ring-4 ring-white items-center justify-center w-full h-full transition-colors rounded-full text-white/70 hover:text-white bg-black/10 backdrop-blur-[1px]">
         <Play className="w-6 h-6" />
       </div>
-    </motion.div>
+    </motion.a>
   </Tooltip>
 );
 
