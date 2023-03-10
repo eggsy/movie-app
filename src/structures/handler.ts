@@ -130,4 +130,5 @@ class TmdbHandler {
   }
 }
 
-export default new TmdbHandler();
+const handler = new TmdbHandler();
+export default handler;
